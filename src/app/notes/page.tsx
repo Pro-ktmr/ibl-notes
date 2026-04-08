@@ -1,23 +1,33 @@
 "use client";
 
-import { use } from "react";
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useNotesContext } from "@/contexts/NotesContext";
 import { ReflectionSection } from "@/components/ReflectionSection";
 import { CycleNoteTabs } from "@/components/CycleNoteTabs";
 
-export default function NoteDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = use(params);
+function NoteDetail() {
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
   const { getNoteById, updateNote, getPreviousNote, loaded } = useNotesContext();
-  const note = getNoteById(id);
 
   if (!loaded) {
     return <p className="text-gray-500">読み込み中...</p>;
   }
+
+  if (!id) {
+    return (
+      <div className="space-y-4">
+        <p className="text-red-600">ノートIDが指定されていません。</p>
+        <Link href="/" className="text-blue-600 hover:underline text-sm">
+          ← 一覧に戻る
+        </Link>
+      </div>
+    );
+  }
+
+  const note = getNoteById(id);
 
   if (!note) {
     return (
@@ -56,5 +66,13 @@ export default function NoteDetailPage({
         }
       />
     </div>
+  );
+}
+
+export default function NoteDetailPage() {
+  return (
+    <Suspense fallback={<p className="text-gray-500">読み込み中...</p>}>
+      <NoteDetail />
+    </Suspense>
   );
 }
