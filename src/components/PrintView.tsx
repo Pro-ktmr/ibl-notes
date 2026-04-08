@@ -97,41 +97,42 @@ export function PrintView({ notes }: Props) {
   const cycleHistory = buildCycleHistory(notes);
 
   return (
-    <div className="print-view hidden print:block text-sm text-black bg-white">
+    <div className="print-view hidden print:block" style={{ fontSize: "14px", color: "#000", backgroundColor: "#fff", fontFamily: "sans-serif", lineHeight: 1.6 }}>
       {/* ===== 前半: 今日の振り返り ===== */}
-      <h2 className="text-lg font-bold mb-4 border-b-2 border-black pb-1">
+      <h2 style={{ fontSize: "18px", fontWeight: "bold", marginBottom: "16px", borderBottom: "2px solid #000", paddingBottom: "4px" }}>
         今日の振り返り
       </h2>
 
       {notes.map((note) => (
         <div
           key={note.id}
-          className="mb-4 border border-gray-400 rounded p-3 print-no-break"
+          className="print-no-break"
+          style={{ marginBottom: "16px", border: "1px solid #9ca3af", borderRadius: "6px", padding: "12px" }}
         >
-          <h3 className="font-bold text-base mb-2">{note.title}（{note.date}）</h3>
+          <h3 style={{ fontWeight: "bold", fontSize: "16px", marginBottom: "8px" }}>{note.title}（{note.date}）</h3>
 
-          <div className="mb-2">
-            <span className="font-semibold">今日の活動内容：</span>
-            <span className="whitespace-pre-wrap">{note.reflection.whatDidToday || "（未記入）"}</span>
+          <div style={{ marginBottom: "8px" }}>
+            <span style={{ fontWeight: 600 }}>今日の活動内容：</span>
+            <span style={{ whiteSpace: "pre-wrap" }}>{note.reflection.whatDidToday || "（未記入）"}</span>
           </div>
 
-          <div className="mb-2">
-            <span className="font-semibold">実施した段階：</span>
+          <div style={{ marginBottom: "8px" }}>
+            <span style={{ fontWeight: 600 }}>実施した段階：</span>
             {note.reflection.stages.length > 0
               ? note.reflection.stages.map((s) => STAGE_LABELS[s] || s).join("、")
               : "（未選択）"}
           </div>
 
-          <div className="mb-1">
-            <span className="font-semibold">楽しかった：</span>
+          <div style={{ marginBottom: "4px" }}>
+            <span style={{ fontWeight: 600 }}>楽しかった：</span>
             {likertText(note.reflection.enjoyment)}
           </div>
-          <div className="mb-1">
-            <span className="font-semibold">学びがあった：</span>
+          <div style={{ marginBottom: "4px" }}>
+            <span style={{ fontWeight: 600 }}>学びがあった：</span>
             {likertText(note.reflection.learning)}
           </div>
           <div>
-            <span className="font-semibold">将来のためになる：</span>
+            <span style={{ fontWeight: 600 }}>将来のためになる：</span>
             {likertText(note.reflection.future)}
           </div>
         </div>
@@ -141,30 +142,30 @@ export function PrintView({ notes }: Props) {
       <div className="print-page-break" />
 
       {/* ===== 後半: サイクルノート ===== */}
-      <h2 className="text-lg font-bold mb-4 border-b-2 border-black pb-1">
+      <h2 style={{ fontSize: "18px", fontWeight: "bold", marginBottom: "16px", borderBottom: "2px solid #000", paddingBottom: "4px" }}>
         サイクルノート
       </h2>
 
       {cycleHistory.map((cycle) => (
-        <div key={cycle.cycleIndex} className="mb-6 border border-gray-400 rounded p-3 print-no-break">
-          <h3 className="font-bold text-base mb-3">
+        <div key={cycle.cycleIndex} className="print-no-break" style={{ marginBottom: "24px", border: "1px solid #9ca3af", borderRadius: "6px", padding: "12px" }}>
+          <h3 style={{ fontWeight: "bold", fontSize: "16px", marginBottom: "12px" }}>
             サイクル {cycle.cycleIndex + 1}
           </h3>
 
           {cycle.fields.map((field) => {
             const diffStatus = getLatestDiffStatus(notes, cycle.cycleIndex, field.key);
             return (
-              <div key={field.key} className="mb-3">
-                <p className="font-semibold text-sm mb-1">{field.label}</p>
+              <div key={field.key} style={{ marginBottom: "12px" }}>
+                <p style={{ fontWeight: 600, fontSize: "14px", marginBottom: "4px" }}>{field.label}</p>
                 {field.history.length === 0 ? (
-                  <p className="text-gray-500">（未記入）</p>
+                  <p style={{ color: "#6b7280" }}>（未記入）</p>
                 ) : field.history.length === 1 ? (
                   <p
-                    className={`whitespace-pre-wrap px-1 ${
-                      diffStatus === "new"
-                        ? "bg-green-100"
-                        : ""
-                    }`}
+                    style={{
+                      whiteSpace: "pre-wrap",
+                      padding: "0 4px",
+                      backgroundColor: diffStatus === "new" ? "#dcfce7" : undefined,
+                    }}
                   >
                     {field.history[0].value}
                   </p>
@@ -174,21 +175,24 @@ export function PrintView({ notes }: Props) {
                     {field.history.slice(0, -1).map((h, i) => (
                       <p
                         key={i}
-                        className="text-gray-400 px-1"
+                        style={{ color: "#9ca3af", padding: "0 4px" }}
                       >
-                        <span className="line-through whitespace-pre-wrap">{h.value}</span>
-                        <span className="text-xs ml-1">（{h.date}）</span>
+                        <span style={{ textDecoration: "line-through", whiteSpace: "pre-wrap" }}>{h.value}</span>
+                        <span style={{ fontSize: "12px", marginLeft: "4px" }}>（{h.date}）</span>
                       </p>
                     ))}
                     {/* Latest value */}
                     <p
-                      className={`whitespace-pre-wrap px-1 ${
-                        diffStatus === "changed"
-                          ? "bg-yellow-100"
-                          : diffStatus === "new"
-                          ? "bg-green-100"
-                          : ""
-                      }`}
+                      style={{
+                        whiteSpace: "pre-wrap",
+                        padding: "0 4px",
+                        backgroundColor:
+                          diffStatus === "changed"
+                            ? "#fef9c3"
+                            : diffStatus === "new"
+                            ? "#dcfce7"
+                            : undefined,
+                      }}
                     >
                       {field.history[field.history.length - 1].value}
                     </p>
@@ -204,13 +208,13 @@ export function PrintView({ notes }: Props) {
       <div className="print-page-break" />
 
       {/* ===== JSON ダンプ ===== */}
-      <h2 className="text-lg font-bold mb-4 border-b-2 border-black pb-1">
+      <h2 style={{ fontSize: "18px", fontWeight: "bold", marginBottom: "16px", borderBottom: "2px solid #000", paddingBottom: "4px" }}>
         データバックアップ（JSON）
       </h2>
-      <p className="text-xs text-gray-500 mb-2">
+      <p style={{ fontSize: "12px", color: "#6b7280", marginBottom: "8px" }}>
         以下の JSON をコピーしておくと、インポート機能でデータを復元できます。
       </p>
-      <pre className="text-[6px] leading-tight whitespace-pre-wrap break-all font-mono border border-gray-300 p-2 rounded">
+      <pre style={{ fontSize: "6px", lineHeight: 1.2, whiteSpace: "pre-wrap", wordBreak: "break-all", fontFamily: "monospace", border: "1px solid #d1d5db", padding: "8px", borderRadius: "4px" }}>
         {JSON.stringify(notes, null, 2)}
       </pre>
     </div>
