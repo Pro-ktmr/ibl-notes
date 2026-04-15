@@ -10,11 +10,14 @@ export interface Reflection {
   future: LikertValue;
 }
 
+export type CycleTabTextField = "taskSetting" | "problemSolving" | "analysis" | "expression";
+
 export interface CycleTab {
   taskSetting: string;       // ①課題の設定
   problemSolving: string;    // ②課題解決の過程
   analysis: string;          // ③分析・考察・推論
   expression: string;        // ④表現・伝達
+  skippedFields?: Partial<Record<CycleTabTextField, boolean>>;
 }
 
 export interface Note {
@@ -51,10 +54,8 @@ export function formatNoteTitle(date: string): string {
 }
 
 export function isCycleTabComplete(tab: CycleTab): boolean {
-  return (
-    tab.taskSetting.trim() !== "" &&
-    tab.problemSolving.trim() !== "" &&
-    tab.analysis.trim() !== "" &&
-    tab.expression.trim() !== ""
+  const fields: CycleTabTextField[] = ["taskSetting", "problemSolving", "analysis", "expression"];
+  return fields.every(
+    (key) => tab[key].trim() !== "" || tab.skippedFields?.[key]
   );
 }

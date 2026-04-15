@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { CycleTab, createEmptyCycleTab, isCycleTabComplete } from "@/types/note";
+import { CycleTab, CycleTabTextField, createEmptyCycleTab, isCycleTabComplete } from "@/types/note";
 
 const FIELDS: {
-  key: keyof CycleTab;
+  key: CycleTabTextField;
   label: string;
   prompt: string;
 }[] = [
@@ -35,7 +35,7 @@ type DiffStatus = "same" | "new" | "changed";
 function getDiffStatus(
   currentValue: string,
   previousTab: CycleTab | undefined,
-  fieldKey: keyof CycleTab
+  fieldKey: CycleTabTextField
 ): DiffStatus {
   if (!previousTab) return currentValue.trim() ? "new" : "same";
   const prevValue = previousTab[fieldKey];
@@ -72,9 +72,10 @@ export function CycleNoteTabs({ cycleTabs, previousCycleTabs, theme, onThemeChan
   const isLastTabEmpty =
     cycleTabs.length > 1 &&
     activeTab === cycleTabs.length - 1 &&
-    Object.values(cycleTabs[cycleTabs.length - 1]).every(
-      (v) => v.trim() === ""
-    );
+    (["taskSetting", "problemSolving", "analysis", "expression"] as CycleTabTextField[]).every(
+      (key) => cycleTabs[cycleTabs.length - 1][key].trim() === ""
+    ) &&
+    !Object.values(cycleTabs[cycleTabs.length - 1].skippedFields ?? {}).some(Boolean);
 
   const handleAddTab = () => {
     if (!canAddTab) return;
@@ -89,10 +90,20 @@ export function CycleNoteTabs({ cycleTabs, previousCycleTabs, theme, onThemeChan
     setActiveTab(updated.length - 1);
   };
 
-  const updateField = (tabIndex: number, key: keyof CycleTab, value: string) => {
+  const updateField = (tabIndex: number, key: CycleTabTextField, value: string) => {
     const updated = cycleTabs.map((tab, i) =>
       i === tabIndex ? { ...tab, [key]: value } : tab
     );
+    onChange(updated);
+  };
+
+  const toggleSkip = (tabIndex: number, key: CycleTabTextField) => {
+    const updated = cycleTabs.map((tab, i) => {
+      if (i !== tabIndex) return tab;
+      const skippedFields = { ...tab.skippedFields };
+      skippedFields[key] = !skippedFields[key];
+      return { ...tab, skippedFields };
+    });
     onChange(updated);
   };
 
@@ -177,21 +188,34 @@ export function CycleNoteTabs({ cycleTabs, previousCycleTabs, theme, onThemeChan
       <div className="space-y-4">
         {FIELDS.map((field) => {
           const status = getDiffStatus(currentTab[field.key], prevTab, field.key);
+          const isSkipped = currentTab.skippedFields?.[field.key] ?? false;
           return (
             <div key={field.key}>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 {field.label}
               </label>
-              <p className="text-xs text-gray-500 mb-1">{field.prompt}</p>
+              <div className="flex items-center gap-2 mb-1">
+                <p className="text-xs text-gray-500">{field.prompt}</p>
+                <label className="flex items-center gap-1 text-xs text-gray-500 whitespace-nowrap cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={isSkipped}
+                    onChange={() => toggleSkip(activeTab, field.key)}
+                    className="cursor-pointer"
+                  />
+                  空欄のままにする
+                </label>
+              </div>
               <textarea
                 value={currentTab[field.key]}
                 onChange={(e) =>
                   updateField(activeTab, field.key, e.target.value)
                 }
                 rows={3}
+                disabled={isSkipped}
                 className={`w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 resize-y ${diffBgClass(
                   status
-                )}`}
+                )} ${isSkipped ? "bg-gray-100 text-gray-400" : ""}`}
               />
             </div>
           );

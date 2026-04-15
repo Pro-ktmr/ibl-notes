@@ -1,6 +1,6 @@
 "use client";
 
-import { Note, CycleTab, LikertValue } from "@/types/note";
+import { Note, CycleTab, CycleTabTextField, LikertValue } from "@/types/note";
 
 const STAGE_LABELS: Record<string, string> = {
   "課題の設定": "①課題の設定",
@@ -16,7 +16,7 @@ const LIKERT_LABEL: Record<number, string> = {
   1: "そう思わない",
 };
 
-const CYCLE_FIELDS: { key: keyof CycleTab; label: string }[] = [
+const CYCLE_FIELDS: { key: CycleTabTextField; label: string }[] = [
   { key: "taskSetting", label: "①課題の設定" },
   { key: "problemSolving", label: "②課題解決の過程" },
   { key: "analysis", label: "③分析・考察・推論" },
@@ -38,7 +38,7 @@ function buildCycleHistory(notes: Note[]) {
   const cycles: {
     cycleIndex: number;
     fields: {
-      key: keyof CycleTab;
+      key: CycleTabTextField;
       label: string;
       history: { date: string; value: string }[];
     }[];
@@ -69,7 +69,7 @@ function buildCycleHistory(notes: Note[]) {
 function getLatestDiffStatus(
   notes: Note[],
   cycleIndex: number,
-  fieldKey: keyof CycleTab
+  fieldKey: CycleTabTextField
 ): "new" | "changed" | "same" {
   if (notes.length === 0) return "same";
   const latestNote = notes[0];
