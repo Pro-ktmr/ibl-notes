@@ -21,6 +21,7 @@ export interface Note {
   id: string;
   date: string; // YYYY-MM-DD
   title: string;
+  theme: string;
   reflection: Reflection;
   cycleTabs: CycleTab[];
 }

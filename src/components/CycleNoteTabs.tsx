@@ -58,10 +58,12 @@ function diffBgClass(status: DiffStatus): string {
 interface Props {
   cycleTabs: CycleTab[];
   previousCycleTabs: CycleTab[] | undefined;
+  theme: string;
+  onThemeChange: (theme: string) => void;
   onChange: (tabs: CycleTab[]) => void;
 }
 
-export function CycleNoteTabs({ cycleTabs, previousCycleTabs, onChange }: Props) {
+export function CycleNoteTabs({ cycleTabs, previousCycleTabs, theme, onThemeChange, onChange }: Props) {
   const [activeTab, setActiveTab] = useState(Math.max(0, cycleTabs.length - 1));
 
   const canAddTab =
@@ -104,6 +106,20 @@ export function CycleNoteTabs({ cycleTabs, previousCycleTabs, onChange }: Props)
       <h3 className="text-base font-semibold text-gray-800 border-b pb-2">
         サイクルノート
       </h3>
+
+      {/* テーマ */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          テーマ
+        </label>
+        <input
+          type="text"
+          value={theme}
+          onChange={(e) => onThemeChange(e.target.value)}
+          placeholder="全体的なテーマを書いてください"
+          className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+      </div>
 
       {/* タブバー */}
       <div className="flex items-center gap-1 border-b border-gray-200">

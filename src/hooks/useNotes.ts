@@ -66,6 +66,7 @@ export function useNotes() {
         id: crypto.randomUUID(),
         date,
         title: formatNoteTitle(date),
+        theme: latestNote?.theme ?? "",
         reflection: createEmptyReflection(),
         cycleTabs:
           latestNote && latestNote.cycleTabs.length > 0

@@ -61,6 +61,10 @@ function NoteDetail() {
       <CycleNoteTabs
         cycleTabs={note.cycleTabs}
         previousCycleTabs={previousNote?.cycleTabs}
+        theme={note.theme ?? ""}
+        onThemeChange={(theme) =>
+          updateNote(id, (n) => ({ ...n, theme }))
+        }
         onChange={(cycleTabs) =>
           updateNote(id, (n) => ({ ...n, cycleTabs }))
         }

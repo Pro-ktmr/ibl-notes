@@ -149,6 +149,13 @@ export function PrintView({ notes, userName }: Props) {
         サイクルノート
       </h2>
 
+      {notes.length > 0 && notes[0].theme && (
+        <div className="mb-4 print-no-break">
+          <span className="font-semibold">テーマ：</span>
+          <span>{notes[0].theme}</span>
+        </div>
+      )}
+
       {cycleHistory.map((cycle) => (
         <div key={cycle.cycleIndex} className="mb-6 border border-gray-400 rounded p-3 print-no-break">
           <h3 className="font-bold text-base mb-3">
