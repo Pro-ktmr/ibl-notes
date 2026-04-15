@@ -9,6 +9,7 @@ import {
 } from "@/types/note";
 
 const STORAGE_KEY = "ibl-notes";
+const USERNAME_KEY = "ibl-notes-username";
 
 function loadNotes(): Note[] {
   if (typeof window === "undefined") return [];
@@ -27,10 +28,19 @@ function saveNotes(notes: Note[]) {
 export function useNotes() {
   const [notes, setNotes] = useState<Note[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const [userName, setUserNameState] = useState("");
 
   useEffect(() => {
     setNotes(loadNotes());
+    if (typeof window !== "undefined") {
+      setUserNameState(localStorage.getItem(USERNAME_KEY) ?? "");
+    }
     setLoaded(true);
+  }, []);
+
+  const setUserName = useCallback((name: string) => {
+    setUserNameState(name);
+    localStorage.setItem(USERNAME_KEY, name);
   }, []);
 
   useEffect(() => {
@@ -121,6 +131,8 @@ export function useNotes() {
   return {
     notes,
     loaded,
+    userName,
+    setUserName,
     addNote,
     updateNote,
     deleteNote,

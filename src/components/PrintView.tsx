@@ -91,13 +91,17 @@ function getLatestDiffStatus(
 
 interface Props {
   notes: Note[];
+  userName?: string;
 }
 
-export function PrintView({ notes }: Props) {
+export function PrintView({ notes, userName }: Props) {
   const cycleHistory = buildCycleHistory(notes);
 
   return (
     <div className="print-view hidden print:block text-sm text-black bg-white">
+      {userName && (
+        <div className="print-header-name">{userName}</div>
+      )}
       {/* ===== 前半: 今日の振り返り ===== */}
       <h2 className="text-lg font-bold mb-4 border-b-2 border-black pb-1">
         今日の振り返り

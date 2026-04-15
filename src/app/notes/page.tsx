@@ -21,7 +21,7 @@ function NoteDetail() {
       <div className="space-y-4">
         <p className="text-red-600">ノートIDが指定されていません。</p>
         <Link href="/" className="text-blue-600 hover:underline text-sm">
-          ← 一覧に戻る
+          ◀ 一覧に戻る
         </Link>
       </div>
     );
@@ -34,7 +34,7 @@ function NoteDetail() {
       <div className="space-y-4">
         <p className="text-red-600">ノートが見つかりません。</p>
         <Link href="/" className="text-blue-600 hover:underline text-sm">
-          ← 一覧に戻る
+          ◀ 一覧に戻る
         </Link>
       </div>
     );
@@ -46,7 +46,7 @@ function NoteDetail() {
     <div className="space-y-8">
       <div className="flex items-center gap-4">
         <Link href="/" className="text-blue-600 hover:underline text-sm">
-          ← 一覧に戻る
+          ◀ 一覧に戻る
         </Link>
         <h2 className="text-lg font-semibold text-gray-800">{note.title}</h2>
       </div>

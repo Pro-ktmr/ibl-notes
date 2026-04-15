@@ -14,7 +14,7 @@ function todayString(): string {
 }
 
 export default function HomePage() {
-  const { notes, loaded, addNote, importNotes } = useNotesContext();
+  const { notes, loaded, addNote, importNotes, userName, setUserName } = useNotesContext();
   const [date, setDate] = useState(todayString);
   const [error, setError] = useState("");
   const [showImport, setShowImport] = useState(false);
@@ -35,6 +35,20 @@ export default function HomePage() {
 
   return (
     <div className="space-y-6">
+      <div className="bg-white shadow rounded-lg p-4">
+        <label htmlFor="user-name" className="block text-sm font-semibold text-gray-700 mb-1">
+          氏名
+        </label>
+        <input
+          id="user-name"
+          type="text"
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
+          placeholder="氏名を入力してください"
+          className="border border-gray-300 rounded px-3 py-2 text-sm w-full max-w-xs focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+      </div>
+
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold text-gray-800">ノート一覧</h2>
         {notes.length > 0 && (
@@ -173,7 +187,7 @@ export default function HomePage() {
         )}
       </div>
 
-      <PrintView notes={notes} />
+      <PrintView notes={notes} userName={userName} />
     </div>
   );
 }
