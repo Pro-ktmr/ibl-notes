@@ -17,8 +17,8 @@ const LIKERT_OPTIONS: { value: LikertValue; label: string }[] = [
 ];
 
 const LIKERT_QUESTIONS: { key: keyof Pick<Reflection, "enjoyment" | "learning" | "future">; label: string }[] = [
-  { key: "enjoyment", label: "今日の探究活動は楽しかった" },
-  { key: "learning", label: "今日の探究活動で学びがあった" },
+  { key: "enjoyment", label: "今日の探究活動に興味を持って取り組めた" },
+  { key: "learning", label: "今日の探究活動で学び（新たな気づきや身につけたスキルなど）があった" },
   { key: "future", label: "今日の探究活動は将来自分のためになると思う" },
 ];
 

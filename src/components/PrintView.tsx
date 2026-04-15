@@ -127,15 +127,15 @@ export function PrintView({ notes, userName }: Props) {
           </div>
 
           <div className="mb-1">
-            <span className="font-semibold">楽しかった：</span>
+            <span className="font-semibold">興味：</span>
             {likertText(note.reflection.enjoyment)}
           </div>
           <div className="mb-1">
-            <span className="font-semibold">学びがあった：</span>
+            <span className="font-semibold">学び：</span>
             {likertText(note.reflection.learning)}
           </div>
           <div>
-            <span className="font-semibold">将来のためになる：</span>
+            <span className="font-semibold">将来のため：</span>
             {likertText(note.reflection.future)}
           </div>
         </div>
