@@ -7,6 +7,7 @@ const STAGE_LABELS: Record<string, string> = {
   "課題解決の過程": "②課題解決の過程",
   "分析・考察・推論": "③分析・考察・推論",
   "表現・伝達": "④表現・伝達",
+  "わからない": "わからない",
 };
 
 const LIKERT_LABEL: Record<number, string> = {

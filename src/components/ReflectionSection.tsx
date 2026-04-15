@@ -7,6 +7,7 @@ const STAGES: { value: Stage; label: string }[] = [
   { value: "課題解決の過程", label: "②課題解決の過程" },
   { value: "分析・考察・推論", label: "③分析・考察・推論" },
   { value: "表現・伝達", label: "④表現・伝達" },
+  { value: "わからない", label: "わからない" },
 ];
 
 const LIKERT_OPTIONS: { value: LikertValue; label: string }[] = [

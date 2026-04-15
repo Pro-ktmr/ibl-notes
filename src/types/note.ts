@@ -1,4 +1,4 @@
-export type Stage = "課題の設定" | "課題解決の過程" | "分析・考察・推論" | "表現・伝達";
+export type Stage = "課題の設定" | "課題解決の過程" | "分析・考察・推論" | "表現・伝達" | "わからない";
 
 export type LikertValue = 4 | 3 | 2 | 1 | null;
 
