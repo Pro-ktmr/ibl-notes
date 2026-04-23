@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { NotesProvider } from "@/contexts/NotesContext";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +33,7 @@ export default function RootLayout({
         <NotesProvider>
           <header className="bg-blue-600 text-white px-6 py-4 shadow">
             <h1 className="text-xl font-bold">
-              <a href="/">探究ノート</a>
+              <Link href="/">探究ノート</Link>
             </h1>
           </header>
           <main className="flex-1 max-w-4xl w-full mx-auto p-6">
